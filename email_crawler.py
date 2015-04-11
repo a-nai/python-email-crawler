@@ -21,7 +21,7 @@ url_regex = re.compile('<a\s.*?href=[\'"](.*?)[\'"].*?>')
 # url_regex = re.compile('<a\s(?:.*?\s)*?href=[\'"](.*?)[\'"].*?>')
 
 # Maximum number of search results to start the crawl
-MAX_SEARCH_RESULTS = 1000
+MAX_SEARCH_RESULTS = 970
 
 EMAILS_FILENAME = 'data/emails.csv'
 DOMAINS_FILENAME = 'data/domains.csv'
@@ -34,13 +34,11 @@ db.connect()
 def crawl(keywords):
 	"""
 	This method will 
-
 	1) Google the keywords, and extract MAX_SEARCH_RESULTS
 	2) For every result (aka website), crawl the website 2 levels deep. 
 		That is the homepage (level 1) and all it's links (level 2).
 		But if level 1 has the email, then skip going to level 2.
 	3) Store the html in /data/html/ and update the database of the crawled emails
-
 	crawl(keywords):
 		Extract Google search results and put all in database
 		Process each search result, the webpage:
@@ -83,7 +81,6 @@ def crawl(keywords):
 def retrieve_html(url):
 	"""
 	Crawl a website, and returns the whole html as an ascii string.
-
 	On any error, return.
 	"""
 	req = urllib2.Request(url)
@@ -122,6 +119,10 @@ def find_emails_2_level_deep(url):
 	if (len(email_set) > 0):
 		# If there is a email, we stop at level 1.
 		return email_set
+
+	else:
+		# We return an empty set
+		return set()
 
 
 def find_emails_in_html(html):
