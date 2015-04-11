@@ -123,23 +123,6 @@ def find_emails_2_level_deep(url):
 		# If there is a email, we stop at level 1.
 		return email_set
 
-	else:
-		# No email at level 1. Crawl level 2
-		logger.info('No email at level 1.. proceeding to crawl level 2')
-
-		link_set = find_links_in_html_with_same_hostname(url, html)
-		for link in link_set:
-			# Crawl them right away!
-			# Enqueue them too
-			html = retrieve_html(link)
-			if (html == None):
-				continue
-			email_set = find_emails_in_html(html)
-			db.enqueue(link, list(email_set))
-
-		# We return an empty set
-		return set()
-
 
 def find_emails_in_html(html):
 	if (html == None):
